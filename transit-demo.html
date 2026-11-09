@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive static preview of Kurt Escoba's Public Transit System passenger dashboard.">
+  <title>Passenger Demo | Public Transit</title>
+  <link rel="stylesheet" href="transit-demo.css">
+  <script src="transit-demo.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html#projects" aria-label="Return to Kurt's portfolio">
+      <span class="brand-icon" aria-hidden="true">⌁</span>
+      <span>Public Transit<small>Passenger Dashboard</small></span>
+    </a>
+    <div class="topbar-actions">
+      <span class="demo-pill"><span aria-hidden="true"></span> STATIC DEMO</span>
+      <a class="back-link" href="index.html#projects">← Portfolio</a>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="demo-notice" aria-label="Demo information">
+      <span class="notice-icon" aria-hidden="true">i</span>
+      <p><strong>Interactive preview.</strong> Wallet loads and fare payments are simulated in this browser. No real money, account, or server is involved.</p>
+      <button class="reset-button" id="resetDemo" type="button">Reset demo</button>
+    </section>
+
+    <section class="welcome-card" aria-labelledby="welcomeTitle">
+      <div>
+        <p class="eyebrow">PASSENGER ACCOUNT <span>· DEMO</span></p>
+        <h1 id="welcomeTitle">Welcome back,<br><span>Transit Demo Passenger</span></h1>
+        <p class="welcome-copy">Choose a route and explore how the passenger fare flow works.</p>
+      </div>
+      <div class="wallet-card">
+        <span class="wallet-label"><span aria-hidden="true">₱</span> Sample wallet balance</span>
+        <strong id="walletBalance" aria-live="polite">₱0.00</strong>
+        <span class="wallet-caption">Demo credits only · no cash value</span>
+      </div>
+      <span class="welcome-decoration" aria-hidden="true">🚌</span>
+    </section>
+
+    <section class="card load-card" aria-labelledby="loadTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">DEMO WALLET</p>
+          <h2 id="loadTitle">Add sample balance</h2>
+        </div>
+        <span class="section-icon" aria-hidden="true">＋</span>
+      </div>
+      <form class="load-form" id="loadForm">
+        <label class="sr-only" for="loadAmount">Amount to add in demo credits</label>
+        <div class="amount-input">
+          <span aria-hidden="true">₱</span>
+          <input id="loadAmount" name="amount" type="number" min="1" max="5000" step="1" value="100" inputmode="decimal" required>
+        </div>
+        <button class="button button-primary" type="submit">Add demo credits</button>
+      </form>
+      <p class="form-message" id="loadMessage" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card routes-card" aria-labelledby="routesTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">PLAN YOUR TRIP</p>
+          <h2 id="routesTitle">Available routes</h2>
+          <p class="section-description">Select a route to try a sample fare payment.</p>
+        </div>
+        <span class="route-count">3 sample routes</span>
+      </div>
+      <div class="route-list">
+        <article class="route-card">
+          <div class="route-icon blue" aria-hidden="true">↗</div>
+          <div class="route-info">
+            <h3>Toril - Downtown</h3>
+            <p><span>Toril</span><span class="route-line" aria-hidden="true"></span><span>Downtown</span></p>
+          </div>
+          <div class="route-fare"><span>Sample fare</span><strong>₱20.00</strong></div>
+          <button class="button button-pay" type="button" data-route="Toril - Downtown" data-fare="20.00">Pay fare</button>
+        </article>
+        <article class="route-card">
+          <div class="route-icon green" aria-hidden="true">↗</div>
+          <div class="route-info">
+            <h3>Matina - Downtown</h3>
+            <p><span>Matina</span><span class="route-line" aria-hidden="true"></span><span>Downtown</span></p>
+          </div>
+          <div class="route-fare"><span>Sample fare</span><strong>₱15.00</strong></div>
+          <button class="button button-pay" type="button" data-route="Matina - Downtown" data-fare="15.00">Pay fare</button>
+        </article>
+        <article class="route-card">
+          <div class="route-icon orange" aria-hidden="true">↗</div>
+          <div class="route-info">
+            <h3>Buhangin - Downtown</h3>
+            <p><span>Buhangin</span><span class="route-line" aria-hidden="true"></span><span>Downtown</span></p>
+          </div>
+          <div class="route-fare"><span>Sample fare</span><strong>₱25.00</strong></div>
+          <button class="button button-pay" type="button" data-route="Buhangin - Downtown" data-fare="25.00">Pay fare</button>
+        </article>
+      </div>
+      <p class="form-message" id="routeMessage" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card history-card" aria-labelledby="historyTitle">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">YOUR ACTIVITY</p>
+          <h2 id="historyTitle">Demo transaction history</h2>
+          <p class="section-description">Transactions appear here after you try a sample payment.</p>
+        </div>
+        <span class="history-icon" aria-hidden="true">↗</span>
+      </div>
+      <div class="history-list" id="historyList" aria-live="polite">
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">⌁</span>
+          <p>No demo transactions yet.</p>
+          <span>Add demo credits, then choose a route to try it.</span>
+        </div>
+      </div>
+    </section>
+    <p class="page-disclaimer">Portfolio preview only · Reloading the page resets the sample account.</p>
+  </main>
+
+  <dialog class="confirm-dialog" id="paymentDialog" aria-labelledby="paymentTitle">
+    <form method="dialog" class="dialog-content" id="paymentForm">
+      <span class="dialog-icon" aria-hidden="true">🚌</span>
+      <p class="section-kicker">SAMPLE TRANSACTION</p>
+      <h2 id="paymentTitle">Confirm demo fare</h2>
+      <p class="confirm-route" id="confirmRoute"></p>
+      <p class="confirm-amount" id="confirmAmount"></p>
+      <p class="dialog-note">This only changes the sample balance in this page. No real payment will be made.</p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" value="cancel">Cancel</button>
+        <button class="button button-primary" id="confirmPayment" value="confirm">Confirm demo fare</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="footer"><span>Public Transit System · Interactive portfolio preview</span><a href="index.html#projects">Back to portfolio ↑</a></footer>
+</body>
+</html>
